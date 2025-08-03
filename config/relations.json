@@ -1,0 +1,32 @@
+{
+  "rules": [
+    {
+      "class_a": "cup",
+      "class_b": "dining table",
+      "conditions": {
+        "min_iou": 0.1
+      }
+    },
+    {
+      "class_a": "person",
+      "class_b": "chair",
+      "conditions": {
+        "min_iou": 0.3
+      }
+    },
+    {
+      "class_a": "chair",
+      "class_b": "dining table",
+      "conditions": {
+        "max_distance_ratio": 0.25
+      }
+    },
+    {
+      "class_a": "*",
+      "class_b": "*",
+      "conditions": {
+        "max_distance_ratio": 0.15
+      }
+    }
+  ]
+}
