@@ -2,12 +2,12 @@ import importlib
 import os
 
 import numpy as np
-
-import src.model_loaders
 from neo4j import GraphDatabase
 
 from config.configuration import YOLO_PATH, API_KEY
+from detectors.relations_detector import detect_relation
 from src.model_loaders import YOLOLoader, LLMLoader
+from src.scene_object import SceneObject
 
 import json
 
@@ -15,27 +15,6 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 
-@dataclass
-class SceneObject:
-    id: str
-    class_name: str
-    bbox: List[float]
-    features: Dict[str, any] = field(default_factory=dict)
-    neighbours: Dict[str, List[str]] = field(default_factory=dict)  # {"on": ["table_1"], "near": [...]}
-
-    def add_neighbour(self, relation: str, obj_id: str):
-        if relation not in self.neighbours:
-            self.neighbours[relation] = []
-        if obj_id not in self.neighbours[relation]:
-            self.neighbours[relation].append(obj_id)
-
-    def to_graph_node(self) -> Dict:
-        return {
-            "id": self.id,
-            "class": self.class_name,
-            "features": self.features,
-            "neighbours": self.neighbours
-        }
 
 class Graphit:
     def __init__(self, classes_config: str = "configs/classes.json", relations_config: str = "configs/relations.json"):
@@ -73,8 +52,8 @@ class Graphit:
                 features=obj_features
             ))
 
-
-        #self._detect_relations(objects)
+        print(img.shape)
+        self._detect_relations(objects, img.shape[0] * img.shape[1] * 1.)
         return objects
 
     def _extract_features(self, roi: np.ndarray, obj: dict, class_cfg: dict) -> dict:
@@ -88,17 +67,16 @@ class Graphit:
                 features[feat_name] = feat_cfg["default"]
         return features
 
-    def _detect_relations(self, objects: List[SceneObject]):
-        # Реализация алгоритма из предыдущего ответа (IoU + координаты)
+    def _detect_relations(self, objects: List[SceneObject], img_diagonal: float):
         for i, obj_a in enumerate(objects):
             for obj_b in objects[i + 1:]:
-                relation = detect_relation(obj_a.bbox, obj_b.bbox)
+                relation = detect_relation(obj_a, obj_b, self.relations_config['rules'], img_diagonal)
                 if relation:
-                    # Добавляем двунаправленные связи для "near"
                     if relation == "near":
                         obj_a.add_neighbour("near", obj_b.id)
                         obj_b.add_neighbour("near", obj_a.id)
                     else:
-                        # Для "on" и "inside" - направленные
                         obj_a.add_neighbour(relation, obj_b.id)
+
+
 
