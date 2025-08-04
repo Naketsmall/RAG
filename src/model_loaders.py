@@ -16,7 +16,7 @@ class LLMLoader:
         return GigaChat(
             credentials=api_key,
             verify_ssl_certs=False,
-            model="GigaChat-2"
+            model="GigaChat-2" # GigaChat-2-Max нормально работает, GigaChat-2 выдает какой-то булщит
         )
 
 

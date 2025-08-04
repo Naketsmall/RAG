@@ -19,7 +19,7 @@ from typing import Dict, List, Optional
 class Graphit:
     def __init__(self, classes_config: str = "configs/classes.json", relations_config: str = "configs/relations.json"):
         self.yolo = YOLOLoader.load_model('../' + YOLO_PATH)
-        self.llm = LLMLoader.load_model(API_KEY)
+        self.llm = LLMLoader.load_model(API_KEY) # TODO: А стоит ли подгружать в этот класс LLM?
 
         with open(classes_config) as f:
             self.classes_config = json.load(f)

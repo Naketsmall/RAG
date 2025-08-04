@@ -16,6 +16,23 @@
       "relations": ["on", "near", "inside"]
     }
   },
+  "laptop": {
+    "detectable": true,
+    "features": {
+      "area": {
+        "method": "area_detector",
+        "default": 250
+      }
+    },
+    "neighbours": {
+      "max_count": 5,
+      "relations": [
+        "on",
+        "near",
+        "inside"
+      ]
+    }
+  },
   "dining table": {
     "detectable": true,
     "features": {
@@ -27,11 +44,14 @@
         "method": "area_detector",
         "default": 250
       }
-
     },
     "neighbours": {
       "max_count": 10,
-      "relations": ["on", "near", "inside"]
+      "relations": [
+        "on",
+        "near",
+        "inside"
+      ]
     }
   }
 }

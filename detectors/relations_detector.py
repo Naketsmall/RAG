@@ -28,6 +28,11 @@ def detect_relation(
             if iou >= cond["threshold"] and is_above(obj_a.bbox, obj_b.bbox):
                 return rule["relation"]  # "on"
 
+        elif cond["type"] == "iom_above":
+            iom = calculate_iomin(obj_a.bbox, obj_b.bbox)
+            if iom >= cond["threshold"] and is_above(obj_a.bbox, obj_b.bbox):
+                return rule["relation"]  # "on"
+
         elif cond["type"] == "distance_below":
             center_a = bbox_center(obj_a.bbox)
             center_b = bbox_center(obj_b.bbox)
@@ -48,8 +53,21 @@ def calculate_iou(bbox_a, bbox_b):
     area_b = (bbox_b[2]-bbox_b[0]) * (bbox_b[3]-bbox_b[1])
     return inter_area / (area_a + area_b - inter_area)
 
+
+def calculate_iomin(bbox_a, bbox_b):
+    inter_x1 = max(bbox_a[0], bbox_b[0])
+    inter_y1 = max(bbox_a[1], bbox_b[1])
+    inter_x2 = min(bbox_a[2], bbox_b[2])
+    inter_y2 = min(bbox_a[3], bbox_b[3])
+    inter_area = max(0, inter_x2 - inter_x1) * max(0, inter_y2 - inter_y1)
+
+    area_obj = (bbox_a[2] - bbox_a[0]) * (bbox_a[3] - bbox_a[1])
+    area_surface = (bbox_b[2] - bbox_b[0]) * (bbox_b[3] - bbox_b[1])
+
+    return float(inter_area / min(area_obj, area_surface))
+
 def bbox_center(bbox):
     return [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
 
 def is_above(bbox_a, bbox_b):
-    return bbox_a[1] < bbox_b[1]
+    return bbox_a[1] >= bbox_b[1]
