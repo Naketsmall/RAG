@@ -33,5 +33,5 @@ print(len(full_prompt), "\n")
 
 response = graphit.llm.chat(full_prompt)
 print(response)
-with open('../llm_responses/TLDBWLLM.txt', 'w') as f:
+with open('../llm_responses/TLDBWLLM_2_Max.txt', 'w') as f:
     f.write(str(response.choices[0].message.content))

@@ -3,29 +3,46 @@
     {
       "class_a": "cup",
       "class_b": "dining table",
+      "relation": "on",
       "conditions": {
-        "min_iou": 0.1
+        "type": "iom_above",
+        "threshold": 0.1
+      }
+    },
+    {
+      "class_a": "laptop",
+      "class_b": "dining table",
+      "relation": "on",
+      "conditions": {
+        "type": "iom_above",
+        "threshold": 0.1
       }
     },
     {
       "class_a": "person",
       "class_b": "chair",
+      "relation": "on",
       "conditions": {
-        "min_iou": 0.3
+        "type": "iou_above",
+        "threshold": 0.3
       }
     },
     {
       "class_a": "chair",
       "class_b": "dining table",
+      "relation": "near",
       "conditions": {
-        "max_distance_ratio": 0.25
+        "type": "distance_below",
+        "threshold_ratio": 0.25
       }
     },
     {
       "class_a": "*",
       "class_b": "*",
+      "relation": "near",
       "conditions": {
-        "max_distance_ratio": 0.15
+        "type": "distance_below",
+        "threshold_ratio": 0.15
       }
     }
   ]

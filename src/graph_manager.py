@@ -3,7 +3,7 @@ import json
 from neo4j import GraphDatabase
 
 
-class DBLoader:
+class GraphManager:
     """
     Класс осуществляет взаимодействие с графовой БД с векторными индексами - Neo4j.
     """
