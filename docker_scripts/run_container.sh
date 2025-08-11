@@ -1,3 +1,4 @@
+# Данный скрипт запускает локально графовую БД Neo4j
 docker run \
     --name rag_neo4j \
     --volume neo4j_data:/data \
