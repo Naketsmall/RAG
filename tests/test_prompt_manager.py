@@ -4,7 +4,7 @@ manager = PromptManager()
 
 prompt_name = "prompt_1"
 input_data = {
-    "db_data": [2, 3, 4],  # Ваши реальные данные
+    "db_data": [2, 3, 4],
     "user_query": "Найди объекты связанные с AI"
 }
 

@@ -23,3 +23,9 @@ class SceneObject:
             "features": self.features,
             "neighbours": self.neighbours
         }
+
+    def get_semantic_repr(self) -> str:
+        parts = [f"{self.class_name}"]
+        for feature_name, feature_value in self.features.items():
+            parts.append(f"{feature_name} {feature_value}")
+        return ". ".join(parts)
